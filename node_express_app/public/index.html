@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users form</title>
+  </head>
+  <body>
+    <form onsubmit="return submitData(event)">
+      <input type="number" name="user_id" id="user_id" required />
+      <input type="text" name="user_name" id="user_name" required />
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      function submitData(event) {
+        event.preventDefault();
+
+        // Get form values
+        const id = document.querySelector("input[name=user_id]").value;
+        const name = document.querySelector("input[name=user_name]").value;
+
+        // Validation: Ensure both fields are filled
+        if (!id || !name) {
+          alert("Please fill in all fields.");
+          return false;
+        }
+
+        const users = {
+          id: id,
+          name: name,
+        };
+
+        // Send data using Fetch API
+        fetch(`/users_details`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(users),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            //alert("User details submitted successfully!");
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("There was an error submitting the data.");
+          });
+      }
+    </script>
+  </body>
+</html>
